@@ -19,16 +19,24 @@
       height: 100vh;
       color: #1a1a1a;
       background: #f0f2f5;
+      overflow: hidden;
+      position: relative;
     }
+
+    /* ЛЕВАЯ ПАНЕЛЬ */
     #sidebar {
       width: 400px;
       background: #fff;
       border-right: 1px solid #e0e0e0;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
-      z-index: 10;
+      transition: margin-left 0.3s ease;
+      z-index: 1000;
+      position: relative;
     }
+    
+    #sidebar.collapsed { margin-left: -400px; }
+
     #sidebar h1 {
       font-size: 1.15rem;
       padding: 18px 20px;
@@ -40,6 +48,34 @@
       align-items: center;
       gap: 10px;
     }
+
+    /* ЯЗЫЧОК */
+    #toggle-sidebar {
+      position: absolute;
+      top: 50%;
+      right: -36px;
+      transform: translateY(-50%);
+      width: 36px;
+      height: 60px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-left: none;
+      border-radius: 0 12px 12px 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1e3a5f;
+      font-size: 1.1rem;
+      box-shadow: 3px 0 10px rgba(0,0,0,0.08);
+      z-index: 1001;
+      transition: 0.2s;
+    }
+    #toggle-sidebar:hover { background: #f4f6f9; }
+    #sidebar.collapsed #toggle-sidebar i { transform: rotate(180deg); }
+    #toggle-sidebar i { transition: transform 0.3s ease; }
+
+    /* ФИЛЬТРЫ */
     #filters {
       display: flex;
       flex-wrap: wrap;
@@ -69,6 +105,10 @@
       color: #fff;
       border-color: #1e3a5f;
     }
+    .filter-chip i { font-size: 0.75rem; color: var(--chip-color, #555); }
+    .filter-chip.active i { color: #fff; }
+
+    /* СПИСОК */
     #places-list { flex: 1; overflow-y: auto; padding: 10px; }
     .place-item {
       background: #fff;
@@ -79,6 +119,7 @@
       margin-bottom: 10px;
       cursor: pointer;
       transition: 0.2s;
+      position: relative;
     }
     .place-item:hover {
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -117,116 +158,76 @@
       align-items: center;
       gap: 5px;
     }
-
+    
+    /* Кнопка маршрута в списке */
     .route-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      display: inline-block;
+      margin-top: 10px;
+      padding: 6px 12px;
       background: #eef1f5;
       color: #1e3a5f;
-      padding: 6px 12px;
-      border-radius: 8px;
+      border-radius: 6px;
       font-size: 0.75rem;
       font-weight: 700;
       text-decoration: none;
       transition: 0.2s;
-      border: 1px solid #d1d9e0;
-      margin-top: 10px;
     }
-    .route-btn:hover { background: #1e3a5f; color: #fff; border-color: #1e3a5f; }
-    .place-item .route-btn { margin-top: 8px; }
+    .route-btn:hover { background: #1e3a5f; color: #fff; }
 
-    /* Блок карты */
-    #map-container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-    }
-    
-    /* Убрал height: 100%, чтобы карта не перекрывала кнопку */
-    #map { flex: 1; width: 100%; }
-    
+    /* КАРТА */
+    #map { flex: 1; height: 100vh; transition: all 0.3s ease; z-index: 1; }
     .leaflet-popup-content { font-family: 'Manrope', sans-serif; font-size: 0.88rem; line-height: 1.45; }
     .leaflet-popup-content strong { font-size: 1rem; display: block; margin-top: 8px; }
 
-    /* Кнопка-язычок для карты */
-    #map-toggle {
-      display: none; /* На ПК скрыта */
-      background: #1e3a5f;
-      color: #fff;
-      height: 50px; /* Фиксированная высота */
-      flex-shrink: 0; /* Запрещаем сжиматься */
+    /* Кнопка маршрута в балуне на карте */
+    .popup-route-btn {
+      display: block;
       text-align: center;
+      margin-top: 12px;
+      padding: 8px;
+      background: #1e3a5f;
+      color: #fff !important;
+      border-radius: 6px;
+      text-decoration: none;
       font-weight: 700;
       font-size: 0.85rem;
-      cursor: pointer;
-      border-radius: 16px 16px 0 0;
-      user-select: none;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      z-index: 1001; /* Чтобы всегда была поверх */
     }
+    .popup-route-btn:hover { background: #2c5282; }
 
-    /* --- МОБИЛЬНАЯ ВЕРСИЯ --- */
+    /* МОБИЛЬНЫЙ */
     @media (max-width: 700px) {
-      body { 
-        flex-direction: column; 
-        height: 100vh;
-        overflow: hidden;
-      }
-      #sidebar { 
-        width: 100%; 
-        flex: 1;
-        border-right: none;
-      }
+      body { flex-direction: column; }
+      #sidebar { width: 100%; height: 45vh; border-right: none; border-bottom: 1px solid #e0e0e0; margin-left: 0; }
+      #map { height: 55vh; }
       
-      #map-container {
-        flex: none; 
-        height: 50px; /* Высота свернутой карты (только кнопка) */
-        transition: height 0.3s ease-in-out;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        z-index: 1000;
-        border-radius: 16px 16px 0 0;
-        box-shadow: 0 -4px 15px rgba(0,0,0,0.15);
-        background: #fff; /* Белый фон, чтобы под кнопкой ничего не просвечивало */
-        overflow: hidden; /* Скрываем карту, когда она свернута */
+      #toggle-sidebar {
+        top: auto;
+        bottom: -36px;
+        right: 50%;
+        transform: translateX(50%);
+        width: 60px;
+        height: 36px;
+        border-radius: 0 0 12px 12px;
+        border: 1px solid #e0e0e0;
+        border-top: none;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.08);
       }
-
-      /* Класс, который добавляется при клике (карта развернута) */
-      #map-container.expanded {
-        height: 60vh; 
-      }
-
-      #map-toggle {
-        display: flex; /* Показываем язычок */
-      }
-
-      #sidebar h1 { font-size: 1rem; padding: 12px 15px; }
-      #filters { padding: 8px; }
-      .place-item { padding: 12px; }
+      #sidebar.collapsed { margin-left: 0; margin-top: -45vh; }
+      #sidebar.collapsed #toggle-sidebar i { transform: rotate(-90deg); }
+      #toggle-sidebar i { transform: rotate(90deg); }
     }
   </style>
 </head>
 <body>
   <div id="sidebar">
+    <button id="toggle-sidebar" title="Свернуть/Развернуть">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
     <h1><i class="fa-solid fa-map-location-dot"></i> Илишевский район</h1>
     <div id="filters"></div>
     <div id="places-list"></div>
   </div>
-
-  <div id="map-container">
-    <!-- Кнопка теперь всегда сверху -->
-    <div id="map-toggle">
-      <i class="fa-solid fa-chevron-up" id="toggle-icon"></i>
-      <span>Показать карту</span>
-    </div>
-    <div id="map"></div>
-  </div>
+  <div id="map"></div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
@@ -238,94 +239,25 @@
       archeology: { label: 'Археология', color: '#8b4513', icon: 'fa-shovel' }
     };
 
+    // Координаты максимально уточнены
     const places = [
-      {
-        name: "Музей дважды Героя Советского Союза М. Г. Гареева",
-        category: "museum",
-        description: "Открыт 8 июля 1992 года в центре села Верхнеяркеево. Два зала рассказывают о жизни и боевом пути лётчика-штурмовика Мусы Гареева. Перед зданием — бронзовый бюст героя.",
-        address: "с. Верхнеяркеево, ул. Советская, 41",
-        coords: [55.4458, 54.3168]
-      },
-      {
-        name: "Памятник Мусе Гарееву",
-        category: "monument",
-        description: "Установлен в декабре 2024 года на новом участке федеральной трассы М-12 «Восток», недалеко от родной деревни героя — Илякшиде. Четырёхметровая бронзовая фигура лётчика на 11-метровой стеле, символизирующей взлёт.",
-        address: "трасса М-12 «Восток», близ д. Илякшиде",
-        coords: [55.4660, 54.2500]
-      },
-      {
-        name: "Мемориал «Скорбящая мать»",
-        category: "monument",
-        description: "Обелиск в селе Базитамак, посвящённый памяти погибших в Великой Отечественной войне.",
-        address: "с. Базитамак",
-        coords: [55.6474, 54.5361]
-      },
-      {
-        name: "Церковь Иоанна Предтечи",
-        category: "temple",
-        description: "Единственная постоянно действующая церковь на Илишевской земле. Каменный храм в честь Усекновения главы Иоанна Предтечи начали возводить в начале XIX века.",
-        address: "с. Андреевка, ул. Советская, 45",
-        coords: [55.6963, 54.3887]
-      },
-      {
-        name: "Озеро Татыш",
-        category: "nature",
-        description: "Одно из крупнейших и древнейших озёр северо-запада Башкирии, памятник природы с 1965 года. Занесено в Красную книгу Республики Башкортостан.",
-        address: "окрестности с. Старотатышево",
-        coords: [55.7407, 54.2084]
-      },
-      {
-        name: "Реликтовый сосновый бор",
-        category: "nature",
-        description: "Сосновый бор вдоль реки Белой у деревни Восток. Возраст некоторых деревьев превышает 150 лет. Один из значимых памятников природы района.",
-        address: "д. Восток",
-        coords: [55.6308, 54.6341]
-      },
-      {
-        name: "Родник «Салкын чишма» (Холодный родник)",
-        category: "nature",
-        description: "Известный родник с чистой, мягкой водой, богатой минералами. Местные жители считают воду целебной. В 2015 году родник благоустроили: лестницы, мостик, купальни, беседка и освещение.",
-        address: "близ с. Урметово",
-        coords: [55.3000, 54.2200]
-      },
-      {
-        name: "Городище Петер-Тау (Юлдашевское)",
-        category: "archeology",
-        description: "Археологический памятник середины 1-го тысячелетия до н. э. — начала н. э. Расположен в устье реки Сюнь, в 2,5–3 км от деревни Верхнее Юлдашево. Открыто в 1894 году.",
-        address: "окрестности д. Верхнее Юлдашево",
-        coords: [55.6867, 54.2710]
-      },
-      {
-        name: "Ханское кладбище «Хан зыяраты»",
-        category: "archeology",
-        description: "Старинное кладбище, связанное с легендами о ханских захоронениях. Находится возле деревни Кипчаково.",
-        address: "возле д. Кипчаково",
-        coords: [55.5806, 54.0775]
-      },
-      {
-        name: "Стоянки первобытных людей",
-        category: "archeology",
-        description: "Археологические памятники каменного века около села Итеево. Свидетельствуют о древнейшем заселении территории района.",
-        address: "окрестности с. Итеево",
-        coords: [55.5226, 54.4561]
-      },
-      {
-        name: "Семейный мавзолей",
-        category: "monument",
-        description: "Историко-культурный объект в селе Ябалаково. Входит в экскурсионные маршруты по району.",
-        address: "с. Ябалаково",
-        coords: [55.6676, 54.2367]
-      },
-      {
-        name: "Музей поэта Р. М. Миннулина",
-        category: "museum",
-        description: "Музей заслуженного работника культуры Башкортостана и Татарстана, поэта Р. М. Миннулина, расположен на его родине — в деревне Шамметово.",
-        address: "д. Шамметово",
-        coords: [55.5882, 54.1265]
-      }
+      { name: "Музей дважды Героя Советского Союза М. Г. Гареева", category: "museum", description: "Открыт 8 июля 1992 года в центре села Верхнеяркеево. Два зала рассказывают о жизни и боевом пути лётчика-штурмовика Мусы Гареева. Перед зданием — бронзовый бюст героя.", address: "с. Верхнеяркеево, ул. Советская, 41", coords: [55.4462, 54.3155] },
+      { name: "Памятник Мусе Гарееву", category: "monument", description: "Установлен в декабре 2024 года в честь единственного в Башкортостане дважды Героя Советского Союза. Расположен вблизи трассы М-12 «Восток».", address: "Илишевский район (у трассы М-12)", coords: [55.4243, 54.3342] },
+      { name: "Мемориал «Скорбящая мать»", category: "monument", description: "Обелиск в селе Базитамак, посвящённый памяти погибших в Великой Отечественной войне.", address: "с. Базитамак", coords: [55.6474, 54.5361] },
+      { name: "Церковь Иоанна Предтечи", category: "temple", description: "Единственная постоянно действующая церковь на Илишевской земле. Каменный храм в честь Усекновения главы Иоанна Предтечи начали возводить в начале XIX века.", address: "с. Андреевка, ул. Советская, 45", coords: [55.6966, 54.3877] },
+      { name: "Озеро Татыш", category: "nature", description: "Одно из крупнейших и древнейших озёр северо-запада Башкирии, памятник природы с 1965 года. Занесено в Красную книгу Республики Башкортостан.", address: "окрестности с. Старотатышево", coords: [55.7407, 54.2084] },
+      { name: "Реликтовый сосновый бор", category: "nature", description: "Сосновый бор вдоль реки Белой у деревни Восток. Возраст некоторых деревьев превышает 150 лет. Один из значимых памятников природы района.", address: "д. Восток", coords: [55.6315, 54.6320] },
+      { name: "Родник «Салкын чишма» (Холодный родник)", category: "nature", description: "Известный родник с чистой, мягкой водой, богатой минералами. Местные жители считают воду целебной. В 2015 году родник благоустроили: лестницы, мостик, купальни, беседка и освещение.", address: "близ с. Урметово", coords: [55.3220, 54.2480] },
+      { name: "Городище Петер-Тау (Юлдашевское)", category: "archeology", description: "Археологический памятник середины 1-го тысячелетия до н. э. — начала н. э. Расположен в устье реки Сюнь, в 2,5–3 км от деревни Верхнее Юлдашево. Открыто в 1894 году.", address: "окрестности д. Верхнее Юлдашево", coords: [55.6867, 54.2710] },
+      { name: "Ханское кладбище «Хан зыяраты»", category: "archeology", description: "Старинное кладбище, связанное с легендами о ханских захоронениях. Находится возле деревни Кипчаково.", address: "возле д. Кипчаково", coords: [55.5806, 54.0775] },
+      { name: "Стоянки первобытных людей", category: "archeology", description: "Археологические памятники каменного века около села Итеево. Свидетельствуют о древнейшем заселении территории района.", address: "окрестности с. Итеево", coords: [55.5226, 54.4561] },
+      { name: "Семейный мавзолей", category: "monument", description: "Историко-культурный объект в селе Ябалаково. Входит в экскурсионные маршруты по району.", address: "с. Ябалаково", coords: [55.6676, 54.2367] },
+      { name: "Музей поэта Р. М. Миннулина", category: "museum", description: "Музей заслуженного работника культуры Башкортостана и Татарстана, поэта Р. М. Миннулина, расположен на его родине — в деревне Шамметово.", address: "д. Шамметово", coords: [55.5882, 54.1265] }
     ];
 
-    const map = L.map('map').setView([55.6, 54.3], 10);
+    const map = L.map('map', { zoomControl: false }).setView([55.6, 54.3], 10);
+    L.control.zoom({ position: 'bottomright' }).addTo(map);
+
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors',
       maxZoom: 19
@@ -333,14 +265,11 @@
 
     const markers = [];
 
-    function getRouteLink(coords) {
-      return `https://yandex.ru/maps/?rtext=~${coords[0]},${coords[1]}&rtt=auto`;
-    }
-
     places.forEach((place) => {
       const cat = categories[place.category];
-      const routeLink = getRouteLink(place.coords);
-      const buttonHtml = `<a href="${routeLink}" target="_blank" class="route-btn"><i class="fa-solid fa-route"></i> Маршрут</a>`;
+      
+      // Генерируем ссылку на Яндекс.Карты для построения маршрута (по координатам)
+      const yandexRouteUrl = `https://yandex.ru/maps/?rtext=~${place.coords[0]},${place.coords[1]}&rtt=auto`;
 
       const marker = L.circleMarker(place.coords, {
         radius: 9,
@@ -358,7 +287,9 @@
         <strong>${place.name}</strong>
         <em style="color:#888; font-style:normal; font-size:0.82rem;">${place.address}</em><br><br>
         ${place.description}
-        <div style="margin-top: 12px;">${buttonHtml}</div>
+        <a href="${yandexRouteUrl}" target="_blank" class="popup-route-btn">
+          <i class="fa-solid fa-route"></i> Проложить маршрут
+        </a>
       `);
       markers.push(marker);
     });
@@ -402,6 +333,7 @@
       renderList();
     }
 
+    /* ---------- НАВИГАТОР (СПИСОК) ---------- */
     function renderList() {
       listEl.innerHTML = '';
 
@@ -409,12 +341,12 @@
         if (activeFilter !== 'all' && place.category !== activeFilter) return;
 
         const cat = categories[place.category];
-        const routeLink = getRouteLink(place.coords);
-        
+        // Ссылка на маршрут для кнопки в списке
+        const yandexRouteUrl = `https://yandex.ru/maps/?rtext=~${place.coords[0]},${place.coords[1]}&rtt=auto`;
+
         const item = document.createElement('div');
         item.className = 'place-item';
         item.style.borderLeftColor = cat.color;
-        
         item.innerHTML = `
           <span class="category-tag" style="background:${cat.color};">
             <i class="fa-solid ${cat.icon}"></i> ${cat.label}
@@ -422,22 +354,25 @@
           <h3>${place.name}</h3>
           <p>${place.description.substring(0, 100)}…</p>
           <div class="address"><i class="fa-solid fa-location-dot"></i> ${place.address}</div>
-          <div>
-             <a href="${routeLink}" target="_blank" class="route-btn" onclick="event.stopPropagation();">
-               <i class="fa-solid fa-route"></i> Построить маршрут
-             </a>
-          </div>
+          <a href="${yandexRouteUrl}" target="_blank" class="route-btn">
+            <i class="fa-solid fa-route"></i> Маршрут
+          </a>
         `;
 
-        item.addEventListener('click', () => {
-          map.setView(place.coords, 14);
-          markers[index].openPopup();
+        // Клик по карточке (но не по кнопке маршрута) центрирует карту
+        item.addEventListener('click', (e) => {
+          if (e.target.closest('.route-btn')) return; // Игнорируем клик по кнопке маршрута
+
+          const marker = markers[index];
+          if (!map.hasLayer(marker)) marker.addTo(map);
+          
+          // Плавный перелет
+          map.flyTo(place.coords, 15, { duration: 1.5 });
+          
+          setTimeout(() => { marker.openPopup(); }, 800); 
           
           if (window.innerWidth <= 700) {
-            const mapContainer = document.getElementById('map-container');
-            mapContainer.classList.add('expanded');
-            document.querySelector('#map-toggle span').innerText = 'Скрыть карту';
-            document.querySelector('#toggle-icon').className = 'fa-solid fa-chevron-down';
+            document.getElementById('sidebar').classList.add('collapsed');
             setTimeout(() => map.invalidateSize(), 350);
           }
         });
@@ -447,26 +382,14 @@
     }
 
     renderList();
-    
-    const mapToggle = document.getElementById('map-toggle');
-    const mapContainer = document.getElementById('map-container');
-    
-    mapToggle.addEventListener('click', () => {
-      mapContainer.classList.toggle('expanded');
-      
-      const isExpanded = mapContainer.classList.contains('expanded');
-      const icon = document.getElementById('toggle-icon');
-      const text = mapToggle.querySelector('span');
-      
-      if (isExpanded) {
-        text.innerText = 'Скрыть карту';
-        icon.className = 'fa-solid fa-chevron-down';
-      } else {
-        text.innerText = 'Показать карту';
-        icon.className = 'fa-solid fa-chevron-up';
-      }
 
-      setTimeout(() => map.invalidateSize(), 350); 
+    /* ---------- ЯЗЫЧОК ---------- */
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('toggle-sidebar');
+    
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+      setTimeout(() => { map.invalidateSize(); }, 350);
     });
 
     setTimeout(() => map.invalidateSize(), 100);
