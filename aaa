@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Презентация: Веб-гид Илишевского района</title>
+  
+  <!-- Шрифт -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Иконки -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Библиотека для презентаций (Reveal.js) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/simple.min.css" id="theme">
+
+  <style>
+    /* Наши кастомные стили */
+    body { font-family: 'Manrope', sans-serif; }
+    .reveal h1, .reveal h2, .reveal h3 { font-family: 'Manrope', sans-serif; text-transform: none; font-weight: 800; }
+    .reveal h1 { font-size: 2.5em; color: #1e3a5f; line-height: 1.2; }
+    .reveal h2 { font-size: 1.8em; color: #1e3a5f; margin-bottom: 30px; }
+    .reveal p, .reveal li { font-size: 0.9em; color: #333; line-height: 1.5; }
+    
+    .highlight { color: #e67e22; font-weight: bold; }
+    .blue-text { color: #2980b9; font-weight: bold; }
+    
+    /* Стили для списков */
+    .reveal ul { display: block; margin-left: 2em; }
+    .reveal li { margin-bottom: 15px; }
+    
+    /* Плашки для картинок/иконок */
+    .icon-box {
+      font-size: 3em; color: #1e3a5f; margin: 20px 0;
+    }
+    .grid-2 {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: center;
+    }
+    .code-badge {
+      background: #1e3a5f; color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.5em; vertical-align: middle; margin-left: 10px;
+    }
+    .title-sub {
+      font-size: 0.6em; color: #666; margin-top: 20px; font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- СЛАЙД 1: Титульный -->
+      <section>
+        <div class="icon-box"><i class="fa-solid fa-map-location-dot"></i></div>
+        <h1>Интерактивный веб-гид<br>«Достопримечательности Илишевского района»</h1>
+        <p class="title-sub">Проект по созданию цифровой туристической карты</p>
+        <p style="margin-top: 50px; font-size: 0.6em;">Автор: <strong>[Твое Имя и Фамилия]</strong></p>
+      </section>
+
+      <!-- СЛАЙД 2: Проблема -->
+      <section>
+        <h2>Актуальность проекта</h2>
+        <div class="grid-2">
+          <div style="text-align: left;">
+            <p>❌ Навигаторы часто не знают о местных исторических объектах (городищах, родниках, памятниках).</p>
+            <p>❌ Бумажные путеводители устарели и неудобны в использовании.</p>
+            <p>❌ Туристам и местным жителям сложно быстро найти информацию о том, куда поехать.</p>
+          </div>
+          <div>
+            <i class="fa-solid fa-location-crosshairs" style="font-size: 8em; color: #e74c3c; opacity: 0.5;"></i>
+          </div>
+        </div>
+      </section>
+
+      <!-- СЛАЙД 3: Цель и задачи -->
+      <section>
+        <h2>Цель и задачи</h2>
+        <p style="color: #2980b9; font-weight: bold; margin-bottom: 20px;">Цель: Создать удобный цифровой гид для туристов и жителей района.</p>
+        <ul>
+          <li><i class="fa-solid fa-check" style="color: #27ae60;"></i> Собрать исторические данные и точные координаты 12 объектов.</li>
+          <li><i class="fa-solid fa-check" style="color: #27ae60;"></i> Разработать дизайн и интерфейс интерактивной карты.</li>
+          <li><i class="fa-solid fa-check" style="color: #27ae60;"></i> Внедрить систему фильтрации и построения маршрутов.</li>
+          <li><i class="fa-solid fa-check" style="color: #27ae60;"></i> Адаптировать приложение под мобильные телефоны.</li>
+        </ul>
+      </section>
+
+      <!-- СЛАЙД 4: Что умеет приложение -->
+      <section>
+        <h2>Функционал приложения</h2>
+        <p>Сайт объединяет <span class="highlight">12 ключевых мест</span>: от музея М. Гареева до городища Петер-Тау.</p>
+        <div style="background: #f5f5f5; padding: 20px; border-radius: 15px; margin-top: 20px;">
+          <p style="margin-bottom: 10px;"><strong>Удобная навигация по категориям:</strong></p>
+          <span style="color: #8e44ad; font-weight: bold;">🏛 Музеи</span> | 
+          <span style="color: #e67e22; font-weight: bold;">🗿 Памятники</span> | 
+          <span style="color: #27ae60; font-weight: bold;">🌳 Природа</span> | 
+          <span style="color: #2980b9; font-weight: bold;">⛪ Храмы</span> | 
+          <span style="color: #8b4513; font-weight: bold;">⛏ Археология</span>
+          <p style="margin-top: 15px; font-size: 0.8em;">Нажав на кнопку фильтра, пользователь оставляет на карте только нужные объекты.</p>
+        </div>
+      </section>
+
+      <!-- СЛАЙД 5: Умная карта и навигация -->
+      <section>
+        <h2>Навигация в один клик</h2>
+        <div class="grid-2">
+          <div style="text-align: left;">
+            <p>📍 Кнопка <strong>«Построить маршрут»</strong> открывает Яндекс.Карты, где маршрут уже проложен от текущего местоположения пользователя.</p>
+            <p>🌲 Для «диких» мест (городищ в лесу) маршрут строится строго по <strong>GPS-координатам</strong>.</p>
+            <p>📱 На телефоне карта сворачивается в нижнюю панель, чтобы не мешать читать описание.</p>
+          </div>
+          <div>
+            <i class="fa-solid fa-route" style="font-size: 8em; color: #27ae60; opacity: 0.7;"></i>
+          </div>
+        </div>
+      </section>
+
+      <!-- СЛАЙД 6: Технологии -->
+      <section>
+        <h2>Технологическая база</h2>
+        <p>Проект написан на чистых веб-технологиях без сложных серверов:</p>
+        <div style="display: flex; justify-content: space-around; margin-top: 40px;">
+          <div><i class="fa-brands fa-html5" style="font-size: 3em; color: #e34f26;"></i><br>HTML5</div>
+          <div><i class="fa-brands fa-css3-alt" style="font-size: 3em; color: #264de4;"></i><br>CSS3</div>
+          <div><i class="fa-brands fa-js" style="font-size: 3em; color: #f7df1e;"></i><br>JavaScript</div>
+          <div><i class="fa-solid fa-map" style="font-size: 3em; color: #2980b9;"></i><br>Leaflet / OSM</div>
+        </div>
+        <p style="margin-top: 40px; font-size: 0.7em; color: #666;">Размещено на хостинге GitHub Pages (доступно 24/7)</p>
+      </section>
+
+      <!-- СЛАЙД 7: Фишка - QR-коды -->
+      <section>
+        <h2>Интеграция с реальным миром <span class="code-badge">ИЗЮМИНКА</span></h2>
+        <div class="grid-2">
+          <div style="text-align: left;">
+            <p>Предлагается печать бумажных карт района с нанесенными на них <strong>QR-кодами</strong>.</p>
+            <p>Турист наводит камеру телефона на код возле села — и сайт <strong>автоматически открывается</strong> с маршрутом к этому месту.</p>
+            <p>Готовое решение для туристических центров и администрации!</p>
+          </div>
+          <div>
+            <i class="fa-solid fa-qrcode" style="font-size: 8em; color: #1e3a5f;"></i>
+          </div>
+        </div>
+      </section>
+
+      <!-- СЛАЙД 8: Итоги -->
+      <section>
+        <h1 style="font-size: 2em;">Спасибо за внимание!</h1>
+        <p style="margin-top: 30px;">Проект полностью работает и доступен по ссылке:</p>
+        <p style="font-size: 0.7em; word-break: break-all; color: #2980b9;">
+          https://amazonka67.github.io/MAHf/
+        </p>
+        
+        <div style="margin-top: 50px;">
+          <p><strong>Планы на развитие:</strong></p>
+          <p style="font-size: 0.7em;">Добавление фотографий объектов и масштабирование проекта на все районы Республики Башкортостан.</p>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Скрипты для работы презентации -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+  <script>
+    // Инициализация презентации
+    Reveal.initialize({
+      hash: true,          // Позволяет листать по ссылке (например, #/3)
+      transition: 'slide', // Анимация перелистывания
+      controls: true,      // Показывать стрелочки в углу
+      progress: true,      // Показывать полоску прогресса внизу
+      center: true,        // Центрировать текст на слайде
+      slideNumber: true    // Показывать номер слайда
+    });
+  </script>
+</body>
+</html>
